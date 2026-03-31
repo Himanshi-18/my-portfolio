@@ -1,0 +1,345 @@
+import { Box, Typography, Button, Stack, Container } from "@mui/material";
+import { motion } from "framer-motion";
+import styled from "@emotion/styled";
+import colors from "../../styles/color";
+import { MdEmail } from "react-icons/md";
+import { FaLinkedin, FaTwitter, FaGithub } from "react-icons/fa";
+import { keyframes } from "@emotion/react";
+
+/* Animations */
+const float = keyframes`
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+`;
+
+const glow = keyframes`
+  0%, 100% { box-shadow: 0 0 20px rgba(0,217,255,0.3), 0 0 40px rgba(0,217,255,0.1); }
+  50% { box-shadow: 0 0 40px rgba(0,217,255,0.6), 0 0 80px rgba(0,217,255,0.3); }
+`;
+
+/* ---------- Styled Section ---------- */
+
+const SectionWrapper = styled(Box)`
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(
+      circle at 30% 40%,
+      rgba(0, 217, 255, 0.15),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 70% 60%,
+      rgba(0, 114, 255, 0.15),
+      transparent 40%
+    ),
+    linear-gradient(180deg, #0f172a 0%, #020617 100%);
+`;
+
+const GlowBlob = styled(motion.div)`
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0,217,255,0.3), transparent 70%);
+  filter: blur(100px);
+  top: -100px;
+  right: -100px;
+  animation: ${float} 6s ease-in-out infinite;
+`;
+
+const GlowBlobLeft = styled(motion.div)`
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(0,114,255,0.2), transparent 70%);
+  filter: blur(100px);
+  bottom: -50px;
+  left: -100px;
+  animation: ${float} 8s ease-in-out infinite;
+`;
+
+const TitleWrapper = styled(motion.div)`
+  margin-bottom: 24px;
+`;
+
+const MainTitle = styled(Typography)`
+  font-weight: 800;
+  font-size: 3rem;
+  background: linear-gradient(135deg, #00d9ff, #0072ff, #ff006e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: ${glow} 3s ease-in-out infinite;
+  
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+`;
+
+const SubtitleText = styled(Typography)`
+  color: ${colors.lightGray};
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-top: 20px;
+  margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+`;
+
+const StyledButton = styled(Button)`
+  border-radius: 50px;
+  padding: 12px 32px;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  
+  &.primary {
+    background: linear-gradient(135deg, #00d9ff, #0072ff);
+    box-shadow: 0 8px 25px rgba(0, 217, 255, 0.3);
+    
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(0, 217, 255, 0.5);
+    }
+  }
+
+  &.secondary {
+    border: 2px solid rgba(0, 217, 255, 0.5);
+    color: #00d9ff;
+    
+    &:hover {
+      background: rgba(0, 217, 255, 0.1);
+      border-color: #00d9ff;
+      transform: translateY(-3px);
+    }
+  }
+`;
+
+const IconBox = styled(motion.div)`
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 40px;
+  flex-wrap: wrap;
+`;
+
+const SocialIcon = styled(motion.a)`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(0, 217, 255, 0.1);
+  border: 2px solid rgba(0, 217, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00d9ff;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(0, 217, 255, 0.2);
+    border-color: #00d9ff;
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0, 217, 255, 0.3);
+  }
+`;
+
+const ContactMini = () => {
+  const containerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, staggerChildren: 0.2 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
+  return (
+    <SectionWrapper>
+      <GlowBlob animate={{ scale: [1, 1.2, 1] }} transition={{ duration: 8, repeat: Infinity }} />
+      <GlowBlobLeft animate={{ scale: [1, 1.3, 1] }} transition={{ duration: 10, repeat: Infinity }} />
+
+      <Container maxWidth="md" sx={{ textAlign: "center", position: "relative" }}>
+        <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+          <TitleWrapper variants={itemVariants}>
+            <MainTitle variant="h2">Let's Talk</MainTitle>
+            <SubtitleText>
+              I'm always interested in hearing about new projects and opportunities. Whether you have a question or just want to say hello, feel free to get in touch!
+            </SubtitleText>
+          </TitleWrapper>
+
+          <motion.div variants={itemVariants}>
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={2}
+              justifyContent="center"
+              sx={{ mb: 4 }}
+            >
+              <StyledButton
+                className="primary"
+                startIcon={<MdEmail />}
+                href="mailto:himanshirawat18@gmail.com"
+              >
+                Send Email
+              </StyledButton>
+
+              <StyledButton
+                className="secondary"
+                startIcon={<FaLinkedin />}
+                href="https://linkedin.com/in/himanshi-rawat"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </StyledButton>
+            </Stack>
+          </motion.div>
+
+          <motion.div variants={itemVariants}>
+            <Typography sx={{ color: colors.lightGray, mb: 3, fontSize: "0.95rem" }}>
+              Or connect with me on social media
+            </Typography>
+            <IconBox
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, staggerChildren: 0.1 }}
+              viewport={{ once: true }}
+            >
+              <SocialIcon
+                as={motion.a}
+                href="https://github.com/Himanshi-18"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                title="GitHub"
+              >
+                <FaGithub />
+              </SocialIcon>
+
+              <SocialIcon
+                as={motion.a}
+                href="https://linkedin.com/in/himanshi-rawat"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                title="LinkedIn"
+              >
+                <FaLinkedin />
+              </SocialIcon>
+
+              <SocialIcon
+                as={motion.a}
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                title="Twitter"
+              >
+                <FaTwitter />
+              </SocialIcon>
+
+              <SocialIcon
+                as={motion.a}
+                href="mailto:himanshirawat18@gmail.com"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                title="Email"
+              >
+                <MdEmail />
+              </SocialIcon>
+            </IconBox>
+          </motion.div>
+        </motion.div>
+      </Container>
+    </SectionWrapper>
+  );
+};
+
+            background: "linear-gradient(45deg, #00C6FF, #0072FF)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Let’s Build Something Amazing Together
+        </Typography>
+
+        <Typography
+          variant="body1"
+          sx={{
+            maxWidth: 600,
+            mx: "auto",
+            color: "#94a3b8",
+            mb: 5,
+            lineHeight: 1.7,
+          }}
+        >
+          I’m open to frontend roles, freelance opportunities, and creative collaborations.
+          If you have an idea — let’s turn it into something impactful.
+        </Typography>
+
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={3}
+          justifyContent="center"
+        >
+          <Button
+            variant="contained"
+            startIcon={<MdEmail />}
+            href="mailto:your-email@gmail.com"
+            sx={{
+              background: "linear-gradient(45deg, #00C6FF, #0072FF)",
+              borderRadius: "30px",
+              px: 4,
+              py: 1.2,
+              fontWeight: 600,
+              textTransform: "none",
+              boxShadow: "0 10px 30px rgba(0,198,255,0.4)",
+              "&:hover": {
+                transform: "translateY(-3px)",
+              },
+            }}
+          >
+            Email Me
+          </Button>
+
+          <Button
+            variant="outlined"
+            startIcon={<FaLinkedin />}
+            href="https://linkedin.com"
+            target="_blank"
+            sx={{
+              borderRadius: "30px",
+              px: 4,
+              py: 1.2,
+              fontWeight: 600,
+              textTransform: "none",
+              borderColor: "#00C6FF",
+              color: "#00C6FF",
+              "&:hover": {
+                backgroundColor: "rgba(0,198,255,0.1)",
+                transform: "translateY(-3px)",
+              },
+            }}
+          >
+            Connect on LinkedIn
+          </Button>
+        </Stack>
+      </Container>
+    </SectionWrapper>
+  );
+};
+
+export default ContactMini;
