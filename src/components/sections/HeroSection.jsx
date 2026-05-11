@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
 import colors from "../../styles/color";
-import HeroImage from "../../assets/images/hero-image.png";
+import HeroImage from "../../assets/images/himanshi.jpeg";
 import SocialIcons from "../ui/SocialIcons";
 
 const gradientShift = keyframes`
