@@ -1,83 +1,58 @@
-import { Box, Typography, IconButton, Divider } from "@mui/material";
+import { Box, Stack, Typography, IconButton } from "@mui/material";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+import colors from "../../styles/color";
 
-const Footer = () => {
-  return (
-    <Box
-      component="footer"
-      sx={{
-        backgroundColor: "#0f172a",
-        color: "#cbd5f5",
-        py: 6,
-        textAlign: "center",
-      }}
+const iconSx = {
+  color: colors.darkGray,
+  p: "4px",
+  "&:hover": { color: colors.secondary, backgroundColor: "transparent" },
+  transition: "color 0.2s",
+};
+
+const Footer = () => (
+  <Box
+    component="footer"
+    sx={{
+      backgroundColor: colors.dark0,
+      borderTop: `1px solid rgba(242, 140, 58, 0.14)`,
+      py: "18px",
+      px: 3,
+    }}
+  >
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="center"
+      flexWrap="wrap"
+      gap="6px"
     >
-      <Typography variant="h6" sx={{ color: "#fff", fontWeight: 600 }}>
-        Himanshi Rawat
+      <Typography variant="caption" sx={{ color: "rgba(245,241,234,0.45)" }}>
+        © {new Date().getFullYear()} Himanshi Rawat · Built with React + MUI
       </Typography>
-
-      <Typography variant="body2" sx={{ mt: 1 }}>
-        Frontend Developer • React.js • UI Enthusiast
-      </Typography>
-
-      <Typography
-        variant="body2"
-        sx={{
-          mt: 2,
-          maxWidth: 420,
-          mx: "auto",
-          color: "#94a3b8",
-        }}
-      >
-        Crafting clean, responsive, and user-friendly web experiences.
-      </Typography>
-
-      {/* Social Icons */}
-      <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mt: 3 }}>
+      <Stack direction="row" spacing={0}>
         <IconButton
           component="a"
           href="https://github.com/Himanshi-18"
           target="_blank"
-          sx={{
-            color: "#cbd5f5",
-            "&:hover": { color: "#38bdf8" },
-          }}
+          rel="noopener noreferrer"
+          size="small"
+          sx={iconSx}
         >
-          <FaGithub size={22} />
+          <FaGithub size={14} />
         </IconButton>
-
         <IconButton
           component="a"
           href="https://www.linkedin.com/in/himanshi-rawat-00b566201/"
           target="_blank"
-          sx={{
-            color: "#cbd5f5",
-            "&:hover": { color: "#38bdf8" },
-          }}
+          rel="noopener noreferrer"
+          size="small"
+          sx={iconSx}
         >
-          <FaLinkedin size={22} />
+          <FaLinkedin size={14} />
         </IconButton>
-
-        <IconButton
-          component="a"
-          href="mailto:himanshirawat0001@gmail.com"
-          sx={{
-            color: "#cbd5f5",
-            "&:hover": { color: "#38bdf8" },
-          }}
-        >
-          <MdEmail size={22} />
-        </IconButton>
-      </Box>
-
-      <Divider sx={{ my: 4, borderColor: "#334155" }} />
-
-      <Typography variant="caption" sx={{ color: "#64748b" }}>
-        © {new Date().getFullYear()} Himanshi Rawat. Built with React & MUI.
-      </Typography>
-    </Box>
-  );
-};
+      </Stack>
+    </Stack>
+  </Box>
+);
 
 export default Footer;

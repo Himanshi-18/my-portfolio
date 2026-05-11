@@ -23,10 +23,10 @@ const pulse = keyframes`
 
 const glow = keyframes`
   0%, 100% { 
-    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+    box-shadow: 0 0 20px rgba(242,140,58,0.12);
   }
   50% { 
-    box-shadow: 0 0 40px rgba(0, 217, 255, 0.5);
+    box-shadow: 0 0 40px rgba(242,140,58,0.22);
   }
 `;
 
@@ -38,7 +38,7 @@ const SectionWrapper = styled(Box)`
   padding: 140px 0;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f172a 100%);
+  background: linear-gradient(180deg, ${colors.dark1} 0%, ${colors.dark0} 100%);
   min-height: 600px;
   display: flex;
   align-items: center;
@@ -51,8 +51,8 @@ const SectionWrapper = styled(Box)`
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.15), transparent 40%),
-                radial-gradient(circle at 80% 50%, rgba(0, 114, 255, 0.15), transparent 40%);
+    background: radial-gradient(circle at 20% 50%, rgba(242,140,58,0.08), transparent 40%),
+                radial-gradient(circle at 80% 50%, rgba(255,176,103,0.05), transparent 40%);
     pointer-events: none;
   }
 
@@ -65,7 +65,7 @@ const SectionWrapper = styled(Box)`
     bottom: 0;
     background: radial-gradient(
       circle at 50% 0%,
-      rgba(0, 217, 255, 0.05) 0%,
+      rgba(242,140,58,0.03) 0%,
       transparent 50%
     );
     pointer-events: none;
@@ -124,7 +124,7 @@ const ContactMini = () => {
             fontWeight: 700,
             mb: 3,
             fontSize: { xs: "2rem", md: "2.5rem" },
-            background: "linear-gradient(45deg, #00C6FF, #0072FF)",
+            background: `linear-gradient(45deg, ${colors.secondary}, ${colors.accent})`,
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}
@@ -137,7 +137,7 @@ const ContactMini = () => {
           sx={{
             maxWidth: 600,
             mx: "auto",
-            color: "#94a3b8",
+            color: colors.textLightMuted,
             mb: 5,
             lineHeight: 1.7,
           }}
@@ -146,53 +146,30 @@ const ContactMini = () => {
           If you have an idea — let’s turn it into something impactful.
         </Typography>
 
-        <Stack
-          direction={{ xs: "column", sm: "row" }}
-          spacing={3}
-          justifyContent="center"
-        >
+        <Stack direction={{ xs: "column", sm: "row" }} spacing={3} justifyContent="center">
           <Button
             variant="contained"
             startIcon={<MdEmail />}
             href="mailto:your-email@gmail.com"
             sx={{
-              background: "linear-gradient(45deg, #00C6FF, #0072FF)",
+              background: `linear-gradient(45deg, ${colors.secondary}, ${colors.accent})`,
               borderRadius: "30px",
               px: 4,
               py: 1.2,
               fontWeight: 600,
               textTransform: "none",
-              boxShadow: "0 10px 30px rgba(0,198,255,0.4)",
-              "&:hover": {
-                transform: "translateY(-3px)",
-              },
+              boxShadow: "0 10px 30px rgba(242,140,58,0.18)",
+              "&:hover": { transform: "translateY(-3px)" },
             }}
           >
             Email Me
           </Button>
-
-          <Button
-            variant="outlined"
-            startIcon={<FaLinkedin />}
-            href="https://linkedin.com"
-            target="_blank"
-            sx={{
-              borderRadius: "30px",
-              px: 4,
-              py: 1.2,
-              fontWeight: 600,
-              textTransform: "none",
-              borderColor: "#00C6FF",
-              color: "#00C6FF",
-              "&:hover": {
-                backgroundColor: "rgba(0,198,255,0.1)",
-                transform: "translateY(-3px)",
-              },
-            }}
-          >
-            Connect on LinkedIn
-          </Button>
         </Stack>
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
+          <Typography sx={{ color: colors.textLight, fontWeight: 600 }}>himanshirawat0001@gmail.com</Typography>
+          <Typography sx={{ color: colors.textLightMuted, mt: 0.5 }}>linkedin.com/in/himanshi-rawat-00b566201</Typography>
+          <Typography sx={{ color: colors.textLightMuted, mt: 0.5 }}>Gurgaon, India</Typography>
+        </Box>
       </Container>
     </SectionWrapper>
   );

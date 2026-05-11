@@ -13,16 +13,14 @@ const GlassCard = ({ children }) => {
         sx={{
           p: 4,
           borderRadius: "18px",
-          background: "rgba(15,23,42,0.75)",
-          border: "1px solid #1e293b",
-          backdropFilter: "blur(12px)",
+          background: "#252525",
+          border: "1px solid rgba(242, 140, 58, 0.12)",
           transition: "all 0.35s ease",
           height: "100%",
-
           "&:hover": {
             transform: "translateY(-8px)",
-            borderColor: "#38bdf8",
-            boxShadow: "0 10px 40px rgba(56,189,248,0.2)",
+            borderColor: "rgba(242, 140, 58, 0.32)",
+            boxShadow: "0 16px 48px rgba(242,140,58,0.1), 0 4px 12px rgba(0,0,0,0.3)",
           },
         }}
       >

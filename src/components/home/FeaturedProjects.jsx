@@ -1,42 +1,39 @@
-import React from "react";
-import { Box, Typography, Button, Chip, Container, Grid } from "@mui/material";
+import { Box, Typography, Button, Chip, Container } from "@mui/material";
 import { motion } from "framer-motion";
 import styled from "@emotion/styled";
-import { keyframes } from "@emotion/react";
 import colors from "../../styles/color";
-import { FiExternalLink, FiGithub } from "react-icons/fi";
+import { FiExternalLink, FiGithub, FiArrowRight } from "react-icons/fi";
 
 import Aarohan from "../../assets/images/aarohan-project.png";
 import GirlsFlavour from "../../assets/images/girlsflavour-project.png";
 import GeminiClone from "../../assets/images/gemini.png";
 
-/* ============================================
-   DATA
-   ============================================ */
-
 const projects = [
   {
     title: "Aarohan – Event & Community",
     type: "Professional",
-    description: "Built responsive UI components and contributed to scalable frontend architecture.",
+    description:
+      "Built responsive, production-ready UI sections from Figma using React and TypeScript. Focused on reusable components, accessibility, and performance.",
     image: Aarohan,
-    tech: ["React", "TypeScript"],
+    tech: ["React", "TypeScript", "Chakra UI"],
     live: "https://aarohanindia.com/",
     github: null,
   },
   {
     title: "Girls Flavour – AI E-commerce",
     type: "Professional",
-    description: "Developed dynamic product workflows and optimized inventory management system.",
+    description:
+      "Improved product workflows and responsive frontend for e-commerce modules, integrating APIs and optimizing UI interactions.",
     image: GirlsFlavour,
-    tech: ["WordPress", "PHP"],
+    tech: ["WordPress", "PHP", "JavaScript"],
     live: "https://girlsflavour.com/",
     github: null,
   },
   {
     title: "Gemini Clone — AI Chat App",
     type: "Personal",
-    description: "Built a Gemini-inspired AI chat app with dynamic UI, responsive layout and Firebase integration.",
+    description:
+      "Crafted a responsive AI chat interface with dynamic components and Firebase-backed state. Prioritized UX and fast rendering.",
     image: GeminiClone,
     tech: ["React", "Firebase"],
     live: "https://gemini-clone-web-app.netlify.app/",
@@ -44,298 +41,239 @@ const projects = [
   },
 ];
 
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-
-const float = keyframes`
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-`;
-
-const glow = keyframes`
-  0%, 100% { 
-    box-shadow: 0 10px 30px rgba(0, 217, 255, 0.1);
-  }
-  50% { 
-    box-shadow: 0 20px 50px rgba(0, 217, 255, 0.25);
-  }
-`;
-
-/* ============================================
-   STYLED COMPONENTS
-   ============================================ */
-
 const SectionWrapper = styled(Box)`
-  padding: 120px 0;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f172a 100%);
-  position: relative;
-  overflow: hidden;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 20% 30%, rgba(0, 217, 255, 0.1), transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(0, 114, 255, 0.1), transparent 50%);
-    pointer-events: none;
-  }
+  padding: 110px 0;
+  background: linear-gradient(135deg, #0a0e27 0%, #111936 50%, #0f172a 100%);
 `;
 
-const SectionTitle = styled(Typography)`
-  font-weight: 900;
-  font-size: 3rem;
+const SectionHeader = styled(Box)`
   text-align: center;
-  margin-bottom: 80px;
-  background: linear-gradient(135deg, #00d9ff 0%, #0072ff 50%, #ff006e 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -1px;
+  max-width: 720px;
+  margin: 0 auto 55px;
+`;
+
+const Label = styled(Typography)`
+  color: ${colors.secondary};
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+`;
+
+const Heading = styled(Typography)`
+  color: ${colors.white};
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.2;
+
+  span {
+    background: linear-gradient(135deg, ${colors.secondary}, ${colors.accent});
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
   @media (max-width: 768px) {
     font-size: 2rem;
-    margin-bottom: 60px;
+  }
+`;
+
+const ProjectsGrid = styled(Box)`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+
+  @media (max-width: 1000px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
   }
 `;
 
 const ProjectCard = styled(motion.div)`
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(20px);
-  border-radius: 20px;
-  overflow: hidden;
-  border: 2px solid rgba(0, 217, 255, 0.2);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
   height: 100%;
-  position: relative;
-  animation: ${glow} 4s ease-in-out infinite;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform 0.35s cubic-bezier(0.2,0.9,0.2,1), box-shadow 0.35s ease, border-color 0.35s ease;
 
   &:hover {
-    transform: translateY(-15px);
-    border-color: rgba(0, 217, 255, 0.6);
-    box-shadow: 0 30px 80px rgba(0, 217, 255, 0.3);
+    transform: translateY(-8px);
+    border-color: rgba(0, 217, 255, 0.5);
+    box-shadow: 0 28px 70px rgba(0, 217, 255, 0.14);
 
-    .project-image {
-      transform: scale(1.1);
+    img {
+      transform: scale(1.08) translateY(-2px);
     }
   }
 `;
 
 const ImageWrapper = styled(Box)`
+  height: 230px;
   overflow: hidden;
-  position: relative;
-  height: 280px;
-  background: linear-gradient(135deg, #00d9ff10, #0072ff10);
+  background: rgba(0, 217, 255, 0.05);
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3) 50%, transparent);
-    opacity: 0.7;
-    transition: opacity 0.3s ease;
-  }
-
-  &:hover::after {
-    opacity: 0.4;
-  }
-
-  @media (max-width: 768px) {
-    height: 220px;
+    transition: transform 0.5s ease;
   }
 `;
 
 const ContentWrapper = styled(Box)`
-  padding: 28px;
-  flex-grow: 1;
+  padding: 26px;
   display: flex;
   flex-direction: column;
-  position: relative;
-  z-index: 2;
-
-  @media (max-width: 768px) {
-    padding: 20px;
-  }
-`;
-
-const ProjectTitle = styled(Typography)`
-  font-weight: 700;
-  font-size: 1.4rem;
-  color: ${colors.white};
-  margin-bottom: 12px;
-  background: linear-gradient(135deg, #00d9ff, #0072ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  transition: all 0.3s ease;
-
-  @media (max-width: 768px) {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-  }
-`;
-
-const ProjectDescription = styled(Typography)`
-  color: ${colors.lightGray};
-  font-size: 0.95rem;
-  line-height: 1.6;
-  flex: 1;
-  margin-bottom: 16px;
-
-  @media (max-width: 768px) {
-    font-size: 0.85rem;
-  }
-`;
-
-const TechChip = styled(Chip)`
-  background: rgba(0, 217, 255, 0.1) !important;
-  color: ${colors.secondary} !important;
-  border: 1px solid rgba(0, 217, 255, 0.3) !important;
-  font-weight: 600;
-  font-size: 0.8rem;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(0, 217, 255, 0.2) !important;
-    border-color: rgba(0, 217, 255, 0.6) !important;
-    box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3);
-  }
+  height: calc(100% - 230px);
 `;
 
 const TypeChip = styled(Chip)`
   width: fit-content;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   background: rgba(255, 0, 110, 0.1) !important;
-  color: #ff006e !important;
-  border: 1px solid rgba(255, 0, 110, 0.3) !important;
-  font-weight: 600;
-  font-size: 0.75rem;
-  text-transform: uppercase;
+  color: #ff4f9a !important;
+  border: 1px solid rgba(255, 0, 110, 0.25) !important;
+  font-size: 0.7rem;
+  font-weight: 700;
   letter-spacing: 0.5px;
+`;
+
+const ProjectTitle = styled(Typography)`
+  color: ${colors.white};
+  font-size: 1.18rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+`;
+
+const ProjectDescription = styled(Typography)`
+  color: #aab6cf;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 18px;
+  flex: 1;
+`;
+
+const TechChip = styled(Chip)`
+  background: rgba(0, 217, 255, 0.08) !important;
+  color: ${colors.secondary} !important;
+  border: 1px solid rgba(0, 217, 255, 0.22) !important;
+  font-size: 0.72rem;
+  font-weight: 600;
+`;
+
+const ActionRow = styled(Box)`
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: auto;
 `;
 
 const ActionButton = styled(Button)`
   color: ${colors.secondary};
   text-transform: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-  flex: 1;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 217, 255, 0.2);
-  border-radius: 8px;
+  font-weight: 700;
+  border: 1px solid rgba(0, 217, 255, 0.22);
+  border-radius: 10px;
+  padding: 8px 14px;
 
   &:hover {
-    background: rgba(0, 217, 255, 0.1);
-    border-color: rgba(0, 217, 255, 0.6);
-    box-shadow: 0 4px 12px rgba(0, 217, 255, 0.2);
-  }
-
-  @media (max-width: 768px) {
-    font-size: 0.85rem;
-    padding: 8px 12px;
+    background: rgba(0, 217, 255, 0.08);
+    border-color: rgba(0, 217, 255, 0.5);
   }
 `;
 
-/* ============================================
-   COMPONENT
-   ============================================ */
+const ViewAllWrapper = styled(Box)`
+  display: flex;
+  justify-content: center;
+  margin-top: 45px;
+`;
+
+const ViewAllButton = styled(Button)`
+  background: linear-gradient(135deg, ${colors.secondary}, ${colors.accent});
+  color: white;
+  text-transform: none;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 12px 28px;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0, 217, 255, 0.22);
+  }
+`;
 
 const FeaturedProjects = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.1 },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
-
   return (
     <SectionWrapper>
       <Container maxWidth="lg">
-        <motion.div 
-          initial="hidden" 
-          whileInView="visible" 
-          viewport={{ once: true }} 
-          variants={containerVariants}
-        >
-          <motion.div
-            variants={cardVariants}
-          >
-            <SectionTitle>Featured Projects</SectionTitle>
-          </motion.div>
+        <SectionHeader>
+          <Label>Live Projects</Label>
+          <Heading>
+            Featured <span>Projects</span>
+          </Heading>
+        </SectionHeader>
 
-          <Grid container spacing={4}>
-            {projects.map((project, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <motion.div variants={cardVariants}>
-                  <ProjectCard whileHover={{ y: -15 }}>
-                    <ImageWrapper>
-                      <img 
-                        src={project.image} 
-                        alt={project.title}
-                        className="project-image"
-                      />
-                    </ImageWrapper>
+        <ProjectsGrid>
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={project.title}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.45, delay: index * 0.08 }}
+            >
+              <ImageWrapper>
+                <img src={project.image} alt={project.title} />
+              </ImageWrapper>
 
-                    <ContentWrapper>
-                      <TypeChip label={project.type} size="small" />
+              <ContentWrapper>
+                <TypeChip label={project.type} size="small" />
 
-                      <ProjectTitle variant="h6">{project.title}</ProjectTitle>
+                <ProjectTitle>{project.title}</ProjectTitle>
 
-                      <ProjectDescription variant="body2">
-                        {project.description}
-                      </ProjectDescription>
+                <ProjectDescription>{project.description}</ProjectDescription>
 
-                      <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 3 }}>
-                        {project.tech.map((tech, i) => (
-                          <TechChip key={i} label={tech} size="small" />
-                        ))}
-                      </Box>
+                <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap", mb: 3 }}>
+                  {project.tech.map((tech) => (
+                    <TechChip key={tech} label={tech} size="small" />
+                  ))}
+                </Box>
 
-                      <Box sx={{ display: "flex", gap: 2 }}>
-                        <ActionButton 
-                          startIcon={<FiExternalLink />} 
-                          href={project.live} 
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Live Demo
-                        </ActionButton>
-                        {project.github && (
-                          <ActionButton 
-                            startIcon={<FiGithub />} 
-                            href={project.github} 
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Code
-                          </ActionButton>
-                        )}
-                      </Box>
-                    </ContentWrapper>
-                  </ProjectCard>
-                </motion.div>
-              </Grid>
-            ))}
-          </Grid>
-        </motion.div>
+                <ActionRow>
+                  <ActionButton
+                    startIcon={<FiExternalLink />}
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Live Demo
+                  </ActionButton>
+
+                  {project.github && (
+                    <ActionButton
+                      startIcon={<FiGithub />}
+                      href={project.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Code
+                    </ActionButton>
+                  )}
+                </ActionRow>
+              </ContentWrapper>
+            </ProjectCard>
+          ))}
+        </ProjectsGrid>
+
+        <ViewAllWrapper>
+          <ViewAllButton href="/projects" endIcon={<FiArrowRight />}>
+            View All Projects
+          </ViewAllButton>
+        </ViewAllWrapper>
       </Container>
     </SectionWrapper>
   );

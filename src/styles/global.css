@@ -1,230 +1,92 @@
-/* ============================================
-   GLOBAL STYLES & ANIMATIONS
-   ============================================ */
-
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* ROOT */
+body {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background: #1E1E1E; /* dark charcoal base */
+  color: #F5F1EA;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Subtle warm grain texture */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.028;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* TYPOGRAPHY */
+h1, h2, h3 {
+  font-weight: 600;
+}
+
+ p {
+  color: #B8B2A7; /* muted light text on dark bg */
+}
+
+/* LINKS */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* SCROLL */
 html {
   scroll-behavior: smooth;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
-  color: #e0e0e0;
-  overflow-x: hidden;
-}
-
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 35px rgba(0, 217, 255, 0.6);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-@keyframes slideInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes rotate-gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes floating-bubble {
-  0%, 100% {
-    transform: translateY(0) translateX(0);
-    opacity: 0.5;
-  }
-  50% {
-    transform: translateY(-20px) translateX(10px);
-    opacity: 1;
-  }
-}
-
-@keyframes glow-border {
-  0%, 100% {
-    border-color: rgba(0, 217, 255, 0.3);
-    box-shadow: 0 0 10px rgba(0, 217, 255, 0.2);
-  }
-  50% {
-    border-color: rgba(0, 217, 255, 0.8);
-    box-shadow: 0 0 25px rgba(0, 217, 255, 0.5);
-  }
-}
-
-@keyframes particle-rise {
-  0% {
-    opacity: 1;
-    transform: translateY(0) translateX(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-100px) translateX(var(--tx, 0px));
-  }
-}
-
-/* ============================================
-   SCROLLBAR STYLING
-   ============================================ */
-
+/* SCROLLBAR */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.5);
+  background: #161616; /* dark track */
 }
-
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #00d9ff, #0072ff);
-  border-radius: 5px;
-  transition: background 0.3s ease;
+  background: linear-gradient(180deg, #F28C3A, #FFB067); /* orange gradient */
+  border-radius: 10px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #00d9ff, #0072ff);
-  box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
-}
-
-/* ============================================
-   UTILITY CLASSES
-   ============================================ */
-
-.gradient-text {
-  background: linear-gradient(135deg, #00d9ff 0%, #0072ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.glass-effect {
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 217, 255, 0.2);
-  border-radius: 20px;
-}
-
-.glow-effect {
-  box-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
-}
-
-.smooth-transition {
-  transition: all 0.3s ease;
-}
-
-.scrollContainer {
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+/* UTILITIES */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
 }
 
 .section {
-  height: 100vh;
-  scroll-snap-align: start;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 80px 0;
 }
 
-/* ============================================
-   RESPONSIVE DESIGN
-   ============================================ */
-
-@media (max-width: 768px) {
-  body {
-    font-size: 14px;
-  }
-
-  h1 {
-    font-size: 1.8rem;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-  }
+/* GLASS */
+.glass {
+  background: rgba(20,20,20,0.03);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(242,140,58,0.08);
+  box-shadow: 0 8px 28px rgba(22,22,22,0.12);
 }
 
-/* ============================================
-   SELECTION STYLING
-   ============================================ */
-
-::selection {
-  background: linear-gradient(135deg, #00d9ff, #0072ff);
-  color: white;
+/* GRADIENT TEXT */
+.gradient-text {
+  background: linear-gradient(135deg, #F28C3A, #FFB067);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-::-moz-selection {
-  background: linear-gradient(135deg, #00d9ff, #0072ff);
-  color: white;
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }

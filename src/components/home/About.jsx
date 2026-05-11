@@ -1,238 +1,201 @@
-import { Typography, Box, Button, Grid, Container } from "@mui/material";
+import { Typography, Box, Container } from "@mui/material";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import { keyframes } from "@emotion/react";
 import colors from "../../styles/color";
-import AboutImage from "../../assets/images/about-illustration.png";
-import { FiArrowRight } from "react-icons/fi";
-
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-
-const float = keyframes`
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-`;
-
-const glow = keyframes`
-  0%, 100% { box-shadow: 0 0 20px rgba(0, 217, 255, 0.2); }
-  50% { box-shadow: 0 0 40px rgba(0, 217, 255, 0.5); }
-`;
-
-/* ============================================
-   STYLED COMPONENTS
-   ============================================ */
+import { FiCode, FiDatabase, FiLayout, FiCheckCircle } from "react-icons/fi";
 
 const SectionWrapper = styled(Box)`
-  padding: 120px 0;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f172a 100%);
-  position: relative;
-  overflow: hidden;
+  padding: 110px 0;
+  background: linear-gradient(135deg, #0a0e27 0%, #111936 50%, #0f172a 100%);
+`;
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 30% 20%, rgba(56, 189, 248, 0.08), transparent 40%),
-                radial-gradient(circle at 70% 80%, rgba(0, 217, 255, 0.05), transparent 50%);
-    pointer-events: none;
+const AboutGrid = styled(Box)`
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 56px;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
   }
 `;
 
-const GlassCard = styled(motion.div)`
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(20px);
-  border-radius: 20px;
-  padding: 60px 40px;
-  border: 2px solid rgba(0, 217, 255, 0.2);
-  position: relative;
-  z-index: 2;
-  transition: all 0.4s ease;
+const CardsGrid = styled(Box)`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
 
-  &:hover {
-    border-color: rgba(0, 217, 255, 0.6);
-    box-shadow: 0 20px 60px rgba(0, 217, 255, 0.3);
-  }
-
-  @media (max-width: 768px) {
-    padding: 40px 25px;
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
   }
 `;
 
-const GradientHeading = styled(Typography)`
-  font-weight: 900;
-  font-size: 3rem;
-  background: linear-gradient(135deg, #00d9ff 0%, #0072ff 50%, #ff006e 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 30px;
-  letter-spacing: -1px;
+const Label = styled(Typography)`
+  color: ${colors.secondary};
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+`;
+
+const Heading = styled(Typography)`
+  color: ${colors.white};
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.18;
+  margin-bottom: 20px;
+
+  span {
+    background: linear-gradient(135deg, ${colors.secondary}, ${colors.accent});
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 
   @media (max-width: 768px) {
     font-size: 2rem;
   }
 `;
 
-const StyledImage = styled(motion.img)`
-  width: 100%;
-  max-width: 450px;
-  border-radius: 20px;
-  filter: drop-shadow(0 10px 40px rgba(0, 217, 255, 0.25));
-  border: 2px solid rgba(0, 217, 255, 0.2);
-  animation: ${float} 4s ease-in-out infinite;
-  transition: all 0.4s ease;
-
-  &:hover {
-    border-color: rgba(0, 217, 255, 0.6);
-    filter: drop-shadow(0 20px 60px rgba(0, 217, 255, 0.4));
-  }
-
-  @media (max-width: 768px) {
-    max-width: 350px;
-  }
-`;
-
-const DescriptionText = styled(Typography)`
-  color: ${colors.lightGray};
-  line-height: 1.9;
-  margin-bottom: 24px;
-  font-size: 1.05rem;
-  transition: color 0.3s ease;
-
-  @media (max-width: 768px) {
-    font-size: 0.95rem;
-  }
-`;
-
-const StyledButton = styled(Button)`
-  background: linear-gradient(135deg, #00d9ff, #0072ff);
-  color: white;
-  padding: 14px 36px;
-  border-radius: 50px;
-  font-weight: 600;
+const IntroText = styled(Typography)`
+  color: #aab6cf;
   font-size: 1rem;
-  text-transform: none;
-  box-shadow: 0 4px 20px rgba(0, 217, 255, 0.3);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+  line-height: 1.8;
+  max-width: 520px;
+  margin-bottom: 28px;
+`;
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.6s ease;
-  }
+const HighlightBox = styled(Box)`
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+`;
+
+const HighlightItem = styled(Box)`
+  padding: 10px 16px;
+  border-radius: 999px;
+  color: ${colors.secondary};
+  background: rgba(0, 217, 255, 0.08);
+  border: 1px solid rgba(0, 217, 255, 0.18);
+  font-size: 0.85rem;
+  font-weight: 600;
+`;
+
+const StrengthCard = styled(motion.div)`
+  min-height: 220px;
+  padding: 26px;
+  border-radius: 20px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+  whileHover={{ scale: 1.02 }}
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(0, 217, 255, 0.5);
-
-    &::before {
-      left: 100%;
-    }
-  }
-
-  @media (max-width: 768px) {
-    padding: 12px 28px;
-    font-size: 0.9rem;
+    transform: translateY(-6px);
+    border-color: rgba(0, 217, 255, 0.38);
+    box-shadow: 0 18px 45px rgba(0, 217, 255, 0.12);
   }
 `;
 
-/* ============================================
-   COMPONENT
-   ============================================ */
+const IconBox = styled(Box)`
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${colors.secondary};
+  background: rgba(0, 217, 255, 0.1);
+  font-size: 1.35rem;
+  margin-bottom: 18px;
+`;
+
+const CardTitle = styled(Typography)`
+  color: ${colors.white};
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+`;
+
+const CardText = styled(Typography)`
+  color: #9ba8c2;
+  font-size: 0.9rem;
+  line-height: 1.65;
+`;
+
+const cards = [
+  {
+    icon: <FiLayout />,
+    title: "Frontend UI",
+    text: "Responsive and reusable interfaces using React, JavaScript, MUI, Bootstrap, and modern UI patterns.",
+  },
+  {
+    icon: <FiCode />,
+    title: "Real Projects",
+    text: "Worked on CRM dashboards, Saviesh Club, and interactive wardrobe modules with real product flows.",
+  },
+  {
+    icon: <FiDatabase />,
+    title: "API Integration",
+    text: "REST API handling, dynamic data rendering, forms, validations, and UI state management.",
+  },
+  {
+    icon: <FiCheckCircle />,
+    title: "Testing & Debugging",
+    text: "Figma matching, responsive fixes, flow testing, bug fixing, and user experience improvements.",
+  },
+];
 
 function About() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.2, delayChildren: 0.1 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.8 } },
-  };
-
-  const imageVariants = {
-    hidden: { opacity: 0, x: 50, scale: 0.9 },
-    visible: { 
-      opacity: 1, 
-      x: 0, 
-      scale: 1,
-      transition: { duration: 0.8 } 
-    },
-  };
-
   return (
     <SectionWrapper>
       <Container maxWidth="lg">
-        <motion.div 
-          variants={containerVariants} 
-          initial="hidden" 
-          whileInView="visible" 
-          viewport={{ once: true }}
-        >
-          <Grid container spacing={6} alignItems="center">
-            {/* LEFT SIDE */}
-            <Grid item xs={12} md={6}>
-              <motion.div variants={itemVariants}>
-                <GradientHeading variant="h2">About Me</GradientHeading>
-              </motion.div>
+        <AboutGrid>
+          <motion.div
+            initial={{ opacity: 0, x: -24 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <Label>About Me</Label>
 
-              <motion.div variants={itemVariants}>
-                <DescriptionText variant="body1">
-                  I'm a passionate frontend developer with a keen eye for modern design and user experience. With expertise in React, JavaScript, and responsive design, I transform ideas into beautiful, functional web interfaces.
-                </DescriptionText>
-              </motion.div>
+            <Heading>
+              I design and build interfaces for <span>real-world products</span>
+            </Heading>
 
-              <motion.div variants={itemVariants}>
-                <DescriptionText variant="body1">
-                  I focus on performance, scalability, and smooth user experiences. Every project I build is an opportunity to push creative boundaries and deliver exceptional results. I'm constantly learning new technologies and refining my craft.
-                </DescriptionText>
-              </motion.div>
+            <IntroText>
+              Im a Frontend Developer with around 2 years of experience
+              building responsive, production-ready frontends for dashboards
+              and product platforms. Ive worked on real-world projects such
+              as Aarohan and Saviesh Club, delivering dashboard interfaces,
+              component libraries, and Figma-to-code workflows that speed up
+              delivery and ensure consistent UI across screens.
+            </IntroText>
 
-              <motion.div variants={itemVariants}>
-                <DescriptionText variant="body1">
-                  Beyond coding, I'm passionate about animation, UI/UX design, and creating delightful digital experiences that users love. Let's collaborate and build something amazing together!
-                </DescriptionText>
-              </motion.div>
+            <HighlightBox>
+              <HighlightItem>React.js</HighlightItem>
+              <HighlightItem>Figma → Code</HighlightItem>
+              <HighlightItem>Responsive Frontend</HighlightItem>
+              <HighlightItem>Dashboard UIs</HighlightItem>
+            </HighlightBox>
+          </motion.div>
 
-              <motion.div variants={itemVariants}>
-                <StyledButton
-                  endIcon={<FiArrowRight />}
-                  href="/about"
-                >
-                  Learn More About Me
-                </StyledButton>
-              </motion.div>
-            </Grid>
-
-            {/* RIGHT SIDE */}
-            <Grid item xs={12} md={6} sx={{ textAlign: "center" }}>
-              <motion.div variants={imageVariants}>
-                <StyledImage 
-                  src={AboutImage} 
-                  alt="About Illustration"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.4 }}
-                />
-              </motion.div>
-            </Grid>
-          </Grid>
-        </motion.div>
+          <CardsGrid>
+            {cards.map((card, index) => (
+              <StrengthCard
+                key={card.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.45, delay: index * 0.08 }}
+              >
+                <IconBox>{card.icon}</IconBox>
+                <CardTitle>{card.title}</CardTitle>
+                <CardText>{card.text}</CardText>
+              </StrengthCard>
+            ))}
+          </CardsGrid>
+        </AboutGrid>
       </Container>
     </SectionWrapper>
   );

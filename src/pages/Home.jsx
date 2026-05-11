@@ -1,17 +1,19 @@
-import Hero from '../components/home/Hero';
-import About from '../components/home/About';
-import SkillPreview from '../components/home/SkillPreview';
-import FeaturedProjects from '../components/home/FeaturedProjects';
-import ContactMini from '../components/common/ContactMini';
+import HeroSection from "../components/sections/HeroSection";
+import AboutSection from "../components/sections/AboutSection";
+import ExperienceTimeline from "../components/sections/ExperienceTimeline";
+import SkillsSection from "../components/sections/SkillsSection";
+import ProjectsSection from "../components/sections/ProjectsSection";
+import ContactSection from "../components/sections/ContactSection";
 
 const Home = () => {
   return (
     <>
-      <Hero />
-      <About />
-      <SkillPreview />
-      <FeaturedProjects />
-      <ContactMini />
+      <HeroSection />
+      <AboutSection />
+      <ExperienceTimeline />
+      <SkillsSection />
+      <ProjectsSection />
+      <ContactSection />
     </>
   );
 };

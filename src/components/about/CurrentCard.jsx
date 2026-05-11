@@ -10,29 +10,12 @@ const current = [
 const CurrentCard = () => {
   return (
     <GlassCard>
-
-      <Typography
-        sx={{
-          fontSize: "0.8rem",
-          letterSpacing: 2,
-          color: "#64748b",
-          mb: 1,
-        }}
-      >
+      <Typography sx={{ fontSize: "0.8rem", letterSpacing: 2, color: "rgba(245,241,234,0.38)", mb: 1 }}>
         CURRENTLY
       </Typography>
-
-      <Typography
-        variant="h4"
-        sx={{
-          fontWeight: 700,
-          mb: 3,
-          color: "#e2e8f0",
-        }}
-      >
+      <Typography variant="h4" sx={{ fontWeight: 700, mb: 3, color: "#F5F1EA" }}>
         What I am up to
       </Typography>
-
       {current.map((item, index) => (
         <Box key={index} display="flex" mb={2}>
           <Box
@@ -40,18 +23,15 @@ const CurrentCard = () => {
               width: 8,
               height: 8,
               borderRadius: "50%",
-              background: "#38bdf8",
+              background: "#F28C3A",
               mt: "8px",
               mr: 2,
+              flexShrink: 0,
             }}
           />
-
-          <Typography color="#cbd5f5">
-            {item}
-          </Typography>
+          <Typography sx={{ color: "rgba(245,241,234,0.7)" }}>{item}</Typography>
         </Box>
       ))}
-
     </GlassCard>
   );
 };

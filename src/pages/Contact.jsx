@@ -1,74 +1,40 @@
-import React from "react";
-import { Box, Typography, Button, Stack, Container, TextField, TextareaAutosize } from "@mui/material";
+import { useState } from "react";
+import { Box, Typography, Grid, Stack, Container, TextField, Alert, Collapse } from "@mui/material";
 import { motion } from "framer-motion";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/react";
+import { FiSend, FiMail, FiMapPin, FiCheckCircle } from "react-icons/fi";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import emailjs from "@emailjs/browser";
+import CustomButton from "../components/ui/CustomButton";
 import colors from "../styles/color";
-import { MdEmail } from "react-icons/md";
-import { FaLinkedin, FaGithub, FaTwitter } from "react-icons/fa";
-import { FiSend } from "react-icons/fi";
 
-/* ============================================
-   ANIMATIONS
-   ============================================ */
+const EJS_SERVICE  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EJS_TEMPLATE = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const EJS_KEY      = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-const float = keyframes`
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-`;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMPTY = { from_name: "", from_email: "", subject: "", message: "" };
 
 const pulse = keyframes`
-  0%, 100% { opacity: 0.5; }
+  0%, 100% { opacity: 0.4; }
   50% { opacity: 1; }
 `;
 
-const glow = keyframes`
-  0%, 100% { 
-    box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
-  }
-  50% { 
-    box-shadow: 0 0 40px rgba(0, 217, 255, 0.5);
-  }
-`;
-
-/* ============================================
-   STYLED COMPONENTS
-   ============================================ */
-
-const SectionWrapper = styled(Box)`
-  padding: 140px 0;
+const PageWrapper = styled(Box)`
+  padding: 120px 0 100px;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0f172a 100%);
+  background: linear-gradient(180deg, #1A1A1A 0%, #161616 50%, #1E1E1E 100%);
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   &::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.15), transparent 40%),
-                radial-gradient(circle at 80% 50%, rgba(0, 114, 255, 0.15), transparent 40%);
-    pointer-events: none;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(
-      circle at 50% 0%,
-      rgba(0, 217, 255, 0.05) 0%,
-      transparent 50%
-    );
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 12% 50%, rgba(242, 140, 58, 0.07), transparent 42%),
+      radial-gradient(ellipse at 88% 50%, rgba(255, 176, 103, 0.04), transparent 38%);
     pointer-events: none;
   }
 `;
@@ -77,329 +43,402 @@ const GlowBlob = styled(motion.div)`
   position: absolute;
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, rgba(0, 217, 255, 0.25), transparent 70%);
-  filter: blur(120px);
+  background: radial-gradient(circle, rgba(242, 140, 58, 0.1), transparent 70%);
+  filter: blur(130px);
   top: -200px;
   right: -200px;
-  animation: ${pulse} 6s ease-in-out infinite;
   pointer-events: none;
+  animation: ${pulse} 6s ease-in-out infinite;
 
-  @media (max-width: 768px) {
-    width: 300px;
-    height: 300px;
-    top: -150px;
-    right: -150px;
-  }
+  @media (max-width: 768px) { width: 300px; height: 300px; }
 `;
 
 const GlowBlobLeft = styled(motion.div)`
   position: absolute;
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(0, 114, 255, 0.2), transparent 70%);
-  filter: blur(100px);
+  background: radial-gradient(circle, rgba(255, 176, 103, 0.07), transparent 70%);
+  filter: blur(110px);
   bottom: -150px;
   left: -150px;
-  animation: ${pulse} 8s ease-in-out infinite;
   pointer-events: none;
+  animation: ${pulse} 9s ease-in-out infinite;
 
-  @media (max-width: 768px) {
-    width: 250px;
-    height: 250px;
-  }
+  @media (max-width: 768px) { width: 250px; height: 250px; }
 `;
 
-const ContentBox = styled(Container)`
-  position: relative;
-  z-index: 2;
-  text-align: center;
-`;
-
-const MainHeading = styled(Typography)`
-  font-weight: 900;
-  font-size: 3.5rem;
-  background: linear-gradient(135deg, #00d9ff 0%, #0072ff 50%, #ff006e 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 24px;
-  letter-spacing: -1px;
-  line-height: 1.2;
-
-  @media (max-width: 768px) {
-    font-size: 2.2rem;
-    margin-bottom: 16px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 1.8rem;
-  }
-`;
-
-const SubHeading = styled(Typography)`
-  max-width: 700px;
-  margin: 0 auto 48px;
-  color: ${colors.lightGray};
-  line-height: 1.8;
-  font-size: 1.1rem;
-
-  @media (max-width: 768px) {
-    font-size: 0.95rem;
-    margin-bottom: 32px;
-  }
-`;
-
-const ContactForm = styled(motion.form)`
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(20px);
+/* White glass card on dark bg — premium contrast */
+const GlassCard = styled(Box)`
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(24px);
   border-radius: 20px;
   padding: 40px;
-  border: 2px solid rgba(0, 217, 255, 0.2);
-  max-width: 600px;
-  margin: 0 auto;
-  text-align: left;
-  box-shadow: 0 20px 60px rgba(0, 217, 255, 0.1);
+  border: 1px solid rgba(242, 140, 58, 0.18);
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.4), 0 2px 12px rgba(242, 140, 58, 0.08);
 
-  @media (max-width: 768px) {
-    padding: 30px;
-  }
+  @media (max-width: 600px) { padding: 28px 20px; }
 `;
 
 const StyledTextField = styled(TextField)`
   && .MuiInputBase-root {
-    background: rgba(0, 0, 0, 0.3);
-    color: ${colors.white};
+    background: rgba(255, 255, 255, 0.06);
+    color: #F5F1EA;
     border-radius: 10px;
-    transition: all 0.3s ease;
-
-    &:hover {
-      background: rgba(0, 0, 0, 0.4);
-    }
-
-    &.Mui-focused {
-      background: rgba(0, 0, 0, 0.5);
-      box-shadow: 0 0 0 2px ${colors.secondary};
-    }
+    transition: all 0.25s ease;
+    &:hover { background: rgba(255, 255, 255, 0.09); }
+    &.Mui-focused { background: rgba(255, 255, 255, 0.1); }
   }
-
   && .MuiOutlinedInput-notchedOutline {
-    border-color: rgba(0, 217, 255, 0.3);
-    transition: border-color 0.3s ease;
+    border-color: rgba(242, 140, 58, 0.2);
+    transition: border-color 0.25s ease;
   }
-
-  &&:hover .MuiOutlinedInput-notchedOutline {
-    border-color: rgba(0, 217, 255, 0.6);
-  }
-
-  && .Mui-focused .MuiOutlinedInput-notchedOutline {
-    border-color: ${colors.secondary};
-  }
-
-  && .MuiInputLabel-root {
-    color: ${colors.lightGray};
-  }
-
-  && .MuiInputLabel-root.Mui-focused {
-    color: ${colors.secondary};
-  }
+  &&:hover .MuiOutlinedInput-notchedOutline { border-color: rgba(242, 140, 58, 0.42); }
+  && .Mui-focused .MuiOutlinedInput-notchedOutline { border-color: ${colors.secondary}; }
+  && .MuiInputLabel-root { color: rgba(245, 241, 234, 0.45); font-size: 0.9rem; }
+  && .MuiInputLabel-root.Mui-focused { color: ${colors.secondary}; }
+  && .MuiInputBase-input { color: #F5F1EA; }
+  && .MuiFormHelperText-root { color: #fca5a5; }
 `;
 
-const StyledTextarea = styled(TextareaAutosize)`
-  width: 100%;
-  padding: 15px;
-  border-radius: 10px;
-  border: 1px solid rgba(0, 217, 255, 0.3);
-  background: rgba(0, 0, 0, 0.3);
-  color: ${colors.white};
-  font-family: inherit;
-  font-size: 1rem;
-  resize: vertical;
-  min-height: 120px;
-  transition: all 0.3s ease;
+const contactDetails = [
+  {
+    icon: FiMail,
+    label: "Email",
+    value: "himanshirawat0001@gmail.com",
+    href: "mailto:himanshirawat0001@gmail.com",
+  },
+  {
+    icon: FiMapPin,
+    label: "Location",
+    value: "Delhi, India",
+  },
+];
 
-  &:focus {
-    outline: none;
-    border-color: ${colors.secondary};
-    box-shadow: 0 0 0 2px ${colors.secondary};
-    background: rgba(0, 0, 0, 0.5);
-  }
+const socialIcons = [
+  { Icon: FaGithub,   href: "https://github.com/Himanshi-18",                           label: "GitHub"   },
+  { Icon: FaLinkedin, href: "https://www.linkedin.com/in/himanshi-rawat-00b566201/",    label: "LinkedIn" },
+];
 
-  &::placeholder {
-    color: ${colors.darkGray};
-  }
-`;
+const containerVariants = {
+  hidden:  { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
 
-const SubmitButton = styled(Button)`
-  background: linear-gradient(135deg, #00d9ff, #0072ff);
-  color: white;
-  padding: 14px 36px;
-  border-radius: 50px;
-  font-weight: 600;
-  font-size: 1rem;
-  text-transform: none;
-  box-shadow: 0 8px 30px rgba(0, 217, 255, 0.3);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
+const itemVariants = {
+  hidden:  { opacity: 0, y: 22 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut" } },
+};
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.6s ease;
-  }
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 217, 255, 0.5);
-
-    &::before {
-      left: 100%;
-    }
-  }
-
-  @media (max-width: 768px) {
-    padding: 12px 28px;
-    font-size: 0.9rem;
-  }
-`;
-
-const SocialIcon = styled(motion.a)`
-  color: ${colors.lightGray};
-  font-size: 2rem;
-  transition: all 0.3s ease;
-
-  &:hover {
-    color: ${colors.secondary};
-    transform: translateY(-5px) scale(1.1);
-  }
-`;
-
-/* ============================================
-   COMPONENT
-   ============================================ */
+const iconBoxSx = {
+  width: 42,
+  height: 42,
+  borderRadius: "10px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexShrink: 0,
+  fontSize: "1.1rem",
+};
 
 const Contact = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
+  const [formData, setFormData] = useState(EMPTY);
+  const [errors, setErrors]     = useState({});
+  const [loading, setLoading]   = useState(false);
+  const [status, setStatus]     = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8 },
-    },
+  const validate = () => {
+    const next = {};
+    if (!formData.from_name.trim())               next.from_name  = "Name is required.";
+    if (!formData.from_email.trim())              next.from_email = "Email is required.";
+    else if (!EMAIL_RE.test(formData.from_email)) next.from_email = "Enter a valid email.";
+    if (!formData.subject.trim())                 next.subject    = "Subject is required.";
+    if (!formData.message.trim())                 next.message    = "Message is required.";
+    setErrors(next);
+    return Object.keys(next).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+    setLoading(true);
+    setStatus(null);
+    try {
+      await emailjs.send(EJS_SERVICE, EJS_TEMPLATE, formData, EJS_KEY);
+      setStatus("success");
+      setFormData(EMPTY);
+    } catch {
+      setStatus("error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <SectionWrapper>
+    <PageWrapper>
       <GlowBlob animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 8, repeat: Infinity }} />
       <GlowBlobLeft animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 10, repeat: Infinity }} />
 
-      <ContentBox maxWidth="md">
+      <Container maxWidth="lg" sx={{ position: "relative", zIndex: 2 }}>
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
+          initial={{ opacity: 0, y: -10 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
         >
-          <motion.div variants={itemVariants}>
-            <MainHeading>Let's Connect</MainHeading>
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <SubHeading variant="body1">
-              I'm always excited to discuss new projects, creative ideas, or opportunities to be part of your vision. Feel free to reach out!
-            </SubHeading>
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <ContactForm noValidate autoComplete="off">
-              <Stack spacing={3} mb={4}>
-                <StyledTextField
-                  label="Name"
-                  variant="outlined"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                />
-                <StyledTextField
-                  label="Email"
-                  variant="outlined"
-                  fullWidth
-                  type="email"
-                  InputLabelProps={{ shrink: true }}
-                />
-                <StyledTextField
-                  label="Subject"
-                  variant="outlined"
-                  fullWidth
-                  InputLabelProps={{ shrink: true }}
-                />
-                <StyledTextarea
-                  aria-label="message"
-                  placeholder="Your Message"
-                />
-              </Stack>
-              <SubmitButton endIcon={<FiSend />} fullWidth>
-                Send Message
-              </SubmitButton>
-            </ContactForm>
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <Stack direction="row" spacing={4} justifyContent="center" mt={6}>
-              <SocialIcon 
-                href="https://linkedin.com/in/himanshi-rawat" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.2, color: colors.secondary }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FaLinkedin />
-              </SocialIcon>
-              <SocialIcon 
-                href="https://github.com/Himanshi-18" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.2, color: colors.secondary }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FaGithub />
-              </SocialIcon>
-              <SocialIcon 
-                href="mailto:himanshirawat22@gmail.com" 
-                whileHover={{ scale: 1.2, color: colors.secondary }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <MdEmail />
-              </SocialIcon>
-              <SocialIcon 
-                href="https://twitter.com/your-twitter"
-                target="_blank" 
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.2, color: colors.secondary }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FaTwitter />
-              </SocialIcon>
-            </Stack>
-          </motion.div>
+          <Typography
+            sx={{
+              color: colors.secondary,
+              fontWeight: 700,
+              letterSpacing: "2.5px",
+              fontSize: "0.72rem",
+              textTransform: "uppercase",
+              mb: 1,
+              textAlign: { xs: "center", md: "left" },
+            }}
+          >
+            Contact
+          </Typography>
         </motion.div>
-      </ContentBox>
-    </SectionWrapper>
+
+        <Grid container spacing={{ xs: 5, md: 8 }} alignItems="flex-start">
+          {/* ── LEFT COLUMN ── */}
+          <Grid size={{ xs: 12, md: 5 }}>
+            <motion.div variants={containerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+              <motion.div variants={itemVariants}>
+                <Typography
+                  variant="h3"
+                  sx={{
+                    fontWeight: 800,
+                    fontSize: { xs: "2rem", sm: "2.3rem", md: "2.7rem" },
+                    lineHeight: 1.2,
+                    mb: 2.5,
+                    background: `linear-gradient(135deg, ${colors.secondary} 0%, ${colors.accent} 60%, #F5F1EA 100%)`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    textAlign: { xs: "center", md: "left" },
+                  }}
+                >
+                  Let's build something great together
+                </Typography>
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Typography
+                  sx={{
+                    color: colors.textLightMuted,
+                    lineHeight: 1.8,
+                    mb: 5,
+                    fontSize: "0.97rem",
+                    textAlign: { xs: "center", md: "left" },
+                  }}
+                >
+                  I'm open to frontend roles, freelance opportunities, and creative
+                  collaborations. If you have a project in mind — let's turn it into
+                  something impactful.
+                </Typography>
+              </motion.div>
+
+              {/* Contact detail rows */}
+              <Stack spacing={3} mb={5}>
+                {contactDetails.map(({ icon: Icon, label, value, href, target }) => (
+                  <motion.div key={label} variants={itemVariants}>
+                    <Stack direction="row" alignItems="center" spacing={2}>
+                      <Box
+                        sx={{
+                          ...iconBoxSx,
+                          background: "rgba(242, 140, 58, 0.1)",
+                          border: "1px solid rgba(242, 140, 58, 0.2)",
+                          color: colors.secondary,
+                        }}
+                      >
+                        <Icon />
+                      </Box>
+                      <Box>
+                        <Typography
+                          sx={{
+                            color: "rgba(245,241,234,0.4)",
+                            fontSize: "0.68rem",
+                            letterSpacing: "1.2px",
+                            textTransform: "uppercase",
+                            mb: 0.3,
+                          }}
+                        >
+                          {label}
+                        </Typography>
+                        {href ? (
+                          <Typography
+                            component="a"
+                            href={href}
+                            target={target}
+                            rel={target ? "noopener noreferrer" : undefined}
+                            sx={{
+                              color: colors.textLight,
+                              fontSize: "0.9rem",
+                              textDecoration: "none",
+                              transition: "color 0.2s",
+                              "&:hover": { color: colors.secondary },
+                            }}
+                          >
+                            {value}
+                          </Typography>
+                        ) : (
+                          <Typography sx={{ color: colors.textLight, fontSize: "0.9rem" }}>
+                            {value}
+                          </Typography>
+                        )}
+                      </Box>
+                    </Stack>
+                  </motion.div>
+                ))}
+              </Stack>
+
+              {/* Social icons */}
+              <motion.div variants={itemVariants}>
+                <Stack direction="row" spacing={1.5} justifyContent={{ xs: "center", md: "flex-start" }}>
+                  {socialIcons.map(({ Icon, href, label }) => (
+                    <Box
+                      key={label}
+                      component="a"
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={label}
+                      sx={{
+                        ...iconBoxSx,
+                        background: "rgba(255,255,255,0.04)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                        color: "rgba(245,241,234,0.5)",
+                        textDecoration: "none",
+                        transition: "all 0.2s",
+                        "&:hover": {
+                          color: colors.secondary,
+                          borderColor: "rgba(242, 140, 58, 0.38)",
+                          background: "rgba(242, 140, 58, 0.08)",
+                        },
+                      }}
+                    >
+                      <Icon />
+                    </Box>
+                  ))}
+                </Stack>
+              </motion.div>
+            </motion.div>
+          </Grid>
+
+          {/* ── RIGHT COLUMN — form ── */}
+          <Grid size={{ xs: 12, md: 7 }}>
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
+            >
+              <GlassCard component="form" noValidate autoComplete="off" onSubmit={handleSubmit}>
+                <Stack spacing={2.5}>
+                  <Stack direction={{ xs: "column", sm: "row" }} spacing={2.5}>
+                    <StyledTextField
+                      label="Name"
+                      name="from_name"
+                      value={formData.from_name}
+                      onChange={handleChange}
+                      error={!!errors.from_name}
+                      helperText={errors.from_name}
+                      variant="outlined"
+                      fullWidth
+                      slotProps={{ inputLabel: { shrink: true } }}
+                    />
+                    <StyledTextField
+                      label="Email"
+                      name="from_email"
+                      type="email"
+                      value={formData.from_email}
+                      onChange={handleChange}
+                      error={!!errors.from_email}
+                      helperText={errors.from_email}
+                      variant="outlined"
+                      fullWidth
+                      slotProps={{ inputLabel: { shrink: true } }}
+                    />
+                  </Stack>
+                  <StyledTextField
+                    label="Subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    error={!!errors.subject}
+                    helperText={errors.subject}
+                    variant="outlined"
+                    fullWidth
+                    slotProps={{ inputLabel: { shrink: true } }}
+                  />
+                  <StyledTextField
+                    label="Message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    error={!!errors.message}
+                    helperText={errors.message}
+                    variant="outlined"
+                    fullWidth
+                    multiline
+                    rows={5}
+                    slotProps={{ inputLabel: { shrink: true } }}
+                  />
+
+                  <Collapse in={status !== null}>
+                    {status === "success" && (
+                      <Alert
+                        icon={<FiCheckCircle />}
+                        severity="success"
+                        sx={{
+                          background: "rgba(16,185,129,0.1)",
+                          color: "#6ee7b7",
+                          border: "1px solid rgba(16,185,129,0.22)",
+                          borderRadius: "10px",
+                          "& .MuiAlert-icon": { color: "#6ee7b7" },
+                        }}
+                      >
+                        Message sent! I'll get back to you soon.
+                      </Alert>
+                    )}
+                    {status === "error" && (
+                      <Alert
+                        severity="error"
+                        sx={{
+                          background: "rgba(239,68,68,0.08)",
+                          color: "#fca5a5",
+                          border: "1px solid rgba(239,68,68,0.22)",
+                          borderRadius: "10px",
+                          "& .MuiAlert-icon": { color: "#fca5a5" },
+                        }}
+                      >
+                        Something went wrong. Please try again or email me directly.
+                      </Alert>
+                    )}
+                  </Collapse>
+
+                  <CustomButton
+                    type="submit"
+                    disabled={loading}
+                    endIcon={loading ? null : <FiSend />}
+                    fullWidth
+                    sx={{ py: "14px", borderRadius: "50px", fontSize: "1rem", mt: 0.5 }}
+                  >
+                    {loading ? "Sending…" : "Send Message"}
+                  </CustomButton>
+                </Stack>
+              </GlassCard>
+            </motion.div>
+          </Grid>
+        </Grid>
+      </Container>
+    </PageWrapper>
   );
 };
 

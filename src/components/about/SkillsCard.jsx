@@ -7,33 +7,16 @@ const tools = ["Git", "Docker", "Figma", "CI/CD"];
 const SkillsCard = () => {
   return (
     <GlassCard>
-
-      <Typography
-        sx={{
-          fontSize: "0.8rem",
-          letterSpacing: 2,
-          color: "#64748b",
-          mb: 1,
-        }}
-      >
+      <Typography sx={{ fontSize: "0.8rem", letterSpacing: 2, color: "rgba(245,241,234,0.38)", mb: 1 }}>
         SKILLS
       </Typography>
-
-      <Typography
-        variant="h4"
-        sx={{
-          fontWeight: 700,
-          mb: 3,
-          color: "#e2e8f0",
-        }}
-      >
+      <Typography variant="h4" sx={{ fontWeight: 700, mb: 3, color: "#F5F1EA" }}>
         My Skillset
       </Typography>
 
-      <Typography sx={{ color: "#94a3b8", mb: 1 }}>
+      <Typography sx={{ color: "rgba(245,241,234,0.5)", mb: 1, fontSize: "0.85rem" }}>
         Frontend
       </Typography>
-
       <Box mb={3}>
         {frontend.map((skill) => (
           <Chip
@@ -42,32 +25,36 @@ const SkillsCard = () => {
             sx={{
               mr: 1,
               mb: 1,
-              background: "#020617",
-              border: "1px solid #334155",
-              color: "#e2e8f0",
+              background: "rgba(242,140,58,0.1)",
+              border: "1px solid rgba(242,140,58,0.22)",
+              color: "#FFB067",
+              fontWeight: 600,
+              fontSize: "0.78rem",
             }}
           />
         ))}
       </Box>
 
-      <Typography sx={{ color: "#94a3b8", mb: 1 }}>
+      <Typography sx={{ color: "rgba(245,241,234,0.5)", mb: 1, fontSize: "0.85rem" }}>
         Tools
       </Typography>
-
-      {tools.map((tool) => (
-        <Chip
-          key={tool}
-          label={tool}
-          sx={{
-            mr: 1,
-            mb: 1,
-            background: "#020617",
-            border: "1px solid #334155",
-            color: "#e2e8f0",
-          }}
-        />
-      ))}
-
+      <Box>
+        {tools.map((tool) => (
+          <Chip
+            key={tool}
+            label={tool}
+            sx={{
+              mr: 1,
+              mb: 1,
+              background: "rgba(242,140,58,0.07)",
+              border: "1px solid rgba(242,140,58,0.16)",
+              color: "rgba(245,241,234,0.7)",
+              fontWeight: 500,
+              fontSize: "0.78rem",
+            }}
+          />
+        ))}
+      </Box>
     </GlassCard>
   );
 };

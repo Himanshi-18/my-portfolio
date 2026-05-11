@@ -2,16 +2,17 @@ import { AppBar, Toolbar, Typography, Box, Container, Button } from "@mui/materi
 import { NavLink, Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import colors from "../../styles/color";
-import Logo from "./Logo";
+import Logo from "../common/Logo";
+import navLinks from "../../data/navigation";
 
 const StyledAppBar = styled(AppBar)`
-  background: rgba(10, 14, 39, 0.75);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: ${colors.dark1};
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(242,140,58,0.08);
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: none;
+  box-shadow: 0 6px 20px rgba(22,22,22,0.06);
 `;
 
 const ToolbarWrapper = styled(Toolbar)`
@@ -25,7 +26,7 @@ const ToolbarWrapper = styled(Toolbar)`
 `;
 
 const TitleLink = styled(Link)`
-  color: ${colors.white};
+  color: ${colors.textLight};
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -43,7 +44,7 @@ const NavBar = styled(Box)`
 
 const StyledNavLink = styled(NavLink)`
   position: relative;
-  color: #b8c2d6;
+  color: ${colors.textLightMuted};
   text-decoration: none;
   font-size: 0.92rem;
   font-weight: 500;
@@ -52,7 +53,7 @@ const StyledNavLink = styled(NavLink)`
   transition: color 0.25s ease;
 
   &:hover {
-    color: ${colors.white};
+    color: ${colors.textLight};
   }
 
   &::after {
@@ -61,7 +62,7 @@ const StyledNavLink = styled(NavLink)`
     left: 0;
     bottom: -4px;
     width: 0;
-    height: 2px;
+    height: 1.5px;
     border-radius: 20px;
     background: linear-gradient(90deg, ${colors.secondary}, ${colors.accent});
     transition: width 0.25s ease;
@@ -81,7 +82,7 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-const Header = () => {
+const Navbar = () => {
   return (
     <StyledAppBar elevation={0}>
       <Container maxWidth="lg">
@@ -93,11 +94,12 @@ const Header = () => {
           </Typography>
 
           <NavBar>
-            <StyledNavLink to="/about">About</StyledNavLink>
-            <StyledNavLink to="/projects">Projects</StyledNavLink>
-            <StyledNavLink to="/contact">Contact</StyledNavLink>
+            {navLinks.map(({ to, label }) => (
+              <StyledNavLink key={to} to={to}>
+                {label}
+              </StyledNavLink>
+            ))}
 
-            {/* Download Resume button kept consistent with theme */}
             <Button
               variant="contained"
               component="a"
@@ -105,14 +107,14 @@ const Header = () => {
               target="_blank"
               rel="noopener noreferrer"
               sx={{
-                background: 'linear-gradient(135deg, #00d9ff, #0072ff)',
-                color: '#fff',
-                textTransform: 'none',
+                background: `linear-gradient(135deg, ${colors.secondary}, ${colors.accent})`,
+                color: "#ffffff",
+                textTransform: "none",
                 fontWeight: 700,
-                borderRadius: '999px',
-                padding: '8px 16px',
-                boxShadow: '0 8px 26px rgba(0,217,255,0.16)',
-                '&:hover': { transform: 'translateY(-2px)' },
+                borderRadius: "999px",
+                padding: "8px 18px",
+                boxShadow: "0 8px 28px rgba(242,140,58,0.16)",
+                "&:hover": { transform: "translateY(-2px)", filter: "brightness(1.03)", boxShadow: "0 12px 36px rgba(242,140,58,0.22)" },
               }}
             >
               Download Resume
@@ -124,4 +126,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Navbar;

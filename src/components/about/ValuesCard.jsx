@@ -19,41 +19,22 @@ const values = [
 const ValuesCard = () => {
   return (
     <GlassCard>
-
-      <Typography
-        sx={{
-          fontSize: "0.8rem",
-          letterSpacing: 2,
-          color: "#64748b",
-          mb: 1,
-        }}
-      >
+      <Typography sx={{ fontSize: "0.8rem", letterSpacing: 2, color: "rgba(245,241,234,0.38)", mb: 1 }}>
         VALUES
       </Typography>
-
-      <Typography
-        variant="h4"
-        sx={{
-          fontWeight: 700,
-          mb: 3,
-          color: "#e2e8f0",
-        }}
-      >
+      <Typography variant="h4" sx={{ fontWeight: 700, mb: 3, color: "#F5F1EA" }}>
         What drives me
       </Typography>
-
       {values.map((value, index) => (
         <Box key={index} mb={3}>
-          <Typography fontWeight={600} color="#e2e8f0">
+          <Typography fontWeight={600} sx={{ color: "#F5F1EA" }}>
             {value.title}
           </Typography>
-
-          <Typography color="#94a3b8">
+          <Typography sx={{ color: "rgba(245,241,234,0.55)" }}>
             {value.desc}
           </Typography>
         </Box>
       ))}
-
     </GlassCard>
   );
 };

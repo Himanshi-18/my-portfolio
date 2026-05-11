@@ -1,14 +1,14 @@
 import { Box, Typography, Container } from "@mui/material";
 import { motion } from "framer-motion";
+import colors from "../../styles/color";
 
 const infoCards = [
   { title: "Role", value: "Frontend Developer" },
   { title: "Focus", value: "React • UI Development • Performance" },
-  { title: "Experience", value: "1+ Years Industry Experience" },
+  { title: "Experience", value: "2+ Years Industry Experience" },
   { title: "Focus Areas", value: "UI Development • Component Architecture • Responsive Design" },
 ];
 
-// Duplicate cards for seamless loop
 const loopedCards = [...infoCards, ...infoCards];
 
 const AboutIntro = () => {
@@ -17,12 +17,12 @@ const AboutIntro = () => {
       sx={{
         py: 14,
         background:
-          "radial-gradient(circle at 30% 20%, rgba(56,189,248,0.08), transparent 40%), #020617",
+          `radial-gradient(circle at 30% 20%, rgba(242,140,58,0.08), transparent 40%), ${colors.dark1}`,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
       <Container maxWidth="lg">
-
-        {/* TEXT INTRO */}
         <Box textAlign="center" mb={8}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -35,7 +35,7 @@ const AboutIntro = () => {
               sx={{
                 fontWeight: 800,
                 mb: 3,
-                background: "linear-gradient(135deg,#38bdf8,#06b6d4)",
+                background: `linear-gradient(135deg, ${colors.secondary}, ${colors.accent})`,
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}
@@ -45,7 +45,7 @@ const AboutIntro = () => {
 
             <Typography
               sx={{
-                color: "#cbd5f5",
+                color: colors.textLightMuted,
                 fontSize: "1.1rem",
                 lineHeight: 1.9,
                 maxWidth: "850px",
@@ -62,7 +62,7 @@ const AboutIntro = () => {
 
             <Typography
               sx={{
-                color: "#94a3b8",
+                color: colors.textLightMuted,
                 lineHeight: 1.8,
                 maxWidth: "850px",
                 mx: "auto",
@@ -76,68 +76,39 @@ const AboutIntro = () => {
           </motion.div>
         </Box>
 
-        {/* INFO CARDS CAROUSEL */}
-        <Box
-          sx={{
-            mt: 4,
-            width: "100%",
-            overflow: "hidden",
-            position: "relative",
-          }}
-        >
+        <Box sx={{ mt: 4, width: "100%", overflow: "hidden", position: "relative" }}>
           <motion.div
-            animate={{
-              x: [0, -25 * 4 + "%"],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            style={{
-              display: "flex",
-              gap: "8px",
-            }}
+            animate={{ x: [0, "-50%"] }}
+            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            style={{ display: "flex", gap: "8px", width: "max-content" }}
           >
             {loopedCards.map((card, index) => (
-              <Box
-                key={index}
-                sx={{
-                  flex: "0 0 calc(25% - 6px)",
-                  p: 2.5,
-                  borderRadius: "16px",
-                  background: "rgba(15,23,42,0.8)",
-                  border: "1px solid #1e293b",
-                  backdropFilter: "blur(10px)",
-                  transition: "0.3s",
-                  textAlign: "center",
-                  "&:hover": {
-                    transform: "translateY(-6px)",
-                    borderColor: "#38bdf8",
-                    boxShadow: "0 0 20px rgba(56, 189, 248, 0.2)",
-                  },
-                }}
-              >
+                <Box
+                  key={index}
+                  sx={{
+                    flex: "0 0 240px",
+                    p: 2.5,
+                    borderRadius: "16px",
+                    background: colors.dark2,
+                    border: "1px solid rgba(255,255,255,0.04)",
+                    backdropFilter: "blur(6px)",
+                    transition: "0.3s",
+                    textAlign: "center",
+                    "&:hover": {
+                      transform: "translateY(-6px)",
+                      borderColor: "rgba(242,140,58,0.18)",
+                      boxShadow: "0 8px 28px rgba(242,140,58,0.08)",
+                    },
+                  }}
+                >
                 <Typography
                   variant="body2"
-                  sx={{
-                    color: "#38bdf8",
-                    mb: 1,
-                    fontWeight: 600,
-                    fontSize: "0.85rem",
-                  }}
+                  sx={{ color: "#F28C3A", mb: 1, fontWeight: 600, fontSize: "0.85rem" }}
                 >
                   {card.title}
                 </Typography>
-
                 <Typography
-                  sx={{
-                    color: "#e2e8f0",
-                    fontWeight: 500,
-                    fontSize: "0.8rem",
-                    lineHeight: 1.4,
-                    wordBreak: "break-word",
-                  }}
+                  sx={{ color: "rgba(245,241,234,0.8)", fontWeight: 500, fontSize: "0.8rem", lineHeight: 1.4, wordBreak: "break-word" }}
                 >
                   {card.value}
                 </Typography>
@@ -145,7 +116,6 @@ const AboutIntro = () => {
             ))}
           </motion.div>
         </Box>
-
       </Container>
     </Box>
   );
